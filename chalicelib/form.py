@@ -1,4 +1,6 @@
-from pydantic import BaseModel, Extra, validator
+import re
+
+from pydantic import BaseModel, Extra, validator, Field
 
 
 class LoginForm(BaseModel):
@@ -12,14 +14,26 @@ class LoginForm(BaseModel):
 class PasswordUpdateForm(BaseModel):
     username: str
     old_password: str
-    new_password: str
+    new_password: str = Field(
+        description='Must conform to password policy. Passwords must contain at least one lower case, one uppercase, one digit and one special character',
+        min_length=8, max_length=99)
 
     @validator('new_password')
-    def passwords_match(cls, v, values, **kwargs):
-        if v == values['old_password']:
+    def passwords_do_not_match(cls, value, values, **kwargs):
+        if value == values['old_password']:
             raise ValueError('password cannot be the same as old password')
 
-        return v
+        return value
+
+    @validator('new_password')
+    def password_validator(cls, value):
+        # Regex representing cognito's password policy
+        #
+        regex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.\[\]{}\(\)?\-“!@#%&/,><\’:;|_~`])\S{8,99}$')
+        if not regex.match(value):
+            raise ValueError('password does not conform to policy')
+
+        return value
 
     class Config:
         extra = Extra.forbid

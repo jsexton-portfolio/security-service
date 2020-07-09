@@ -3,7 +3,7 @@ from typing import Dict, Any, Type
 
 import pyocle
 import pytest
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 from chalicelib.form import LoginForm, PasswordUpdateForm
 
@@ -12,7 +12,7 @@ from chalicelib.form import LoginForm, PasswordUpdateForm
 def login_form() -> Dict[str, Any]:
     valid_form = {
         'username': 'username',
-        'password': 'password'
+        'password': 'Password1.'
     }
 
     return copy.deepcopy(valid_form)
@@ -23,7 +23,7 @@ def password_update_form() -> Dict[str, Any]:
     valid_form = {
         'username': 'username',
         'oldPassword': 'oldPassword',
-        'newPassword': 'newPassword'
+        'newPassword': 'Password1.'
     }
 
     return copy.deepcopy(valid_form)
@@ -127,3 +127,25 @@ def _get_form_type(fixture_name: str) -> Type[BaseModel]:
         return PasswordUpdateForm
 
     raise RuntimeError('form type could not be determined by fixture name')
+
+
+@pytest.mark.parametrize('password,valid', [
+    (None, False),
+    ('', False),
+    ('123', False),
+    ('PASSWORD1.', False),
+    ('Password1', False),
+    ('password1', False),
+    ('Password1.Password1.Password1.Password1.Password1.Password1.Password1.Password1.Password1.Password1.', False),
+
+    ('Password1.', True),
+    ('Passwo1.', True),
+])
+def test_password_policy_validation(password_update_form, password: str, valid: bool):
+    password_update_form['newPassword'] = password
+
+    if valid:
+        PasswordUpdateForm(**password_update_form)
+    else:
+        with pytest.raises(ValidationError):
+            PasswordUpdateForm(**password_update_form)

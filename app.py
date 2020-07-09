@@ -4,13 +4,14 @@ import pyocle
 from chalice import Chalice
 from pycognito import Cognito
 
+from chalicelib.error import error_handler
 from chalicelib.form import LoginForm, PasswordUpdateForm
 
 app = Chalice(app_name='security-service')
 
 
 @app.route('/login', methods=['POST'], cors=True)
-@pyocle.error.error_handler
+@error_handler
 def login():
     """
     Authenticates given credentials
@@ -27,7 +28,7 @@ def login():
 
 
 @app.route('/confirm', methods=['POST'], cors=True)
-@pyocle.error.error_handler
+@error_handler
 def confirm():
     """
     Confirms a pending user and updates their temporary password
