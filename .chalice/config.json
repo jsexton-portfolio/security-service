@@ -1,0 +1,16 @@
+{
+  "version": "2.0",
+  "app_name": "security-service",
+  "environment_variables": {
+    "APP_CLIENT_ID": "AQICAHguh7hq4XWINv4pK0oXt59Izrn+V2QkvsdgWXAZRHqHxgE+QYg2jU03QCRkA6swD+SXAAAAeDB2BgkqhkiG9w0BBwagaTBnAgEAMGIGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMHG6h7+rkkRMnzD5hAgEQgDXAlFCMKe6inXQa8RIS615qt8H1Gpt3rIz1rtnsm6qCvB1355NEJU7zOPKsWfr5FascDZBL1w==",
+    "USER_POOL_ID": "us-east-2_MLclIlI5Y"
+  },
+  "stages": {
+    "prod": {
+      "api_gateway_stage": "api"
+    },
+    "dev": {
+      "api_gateway_stage": "api"
+    }
+  }
+}
