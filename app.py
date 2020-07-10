@@ -27,7 +27,7 @@ def login():
     return pyocle.response.ok(data)
 
 
-@app.route('/confirm', methods=['POST'], cors=True)
+@app.route('/confirm-account', methods=['POST'], cors=True)
 @error_handler
 def confirm():
     """
