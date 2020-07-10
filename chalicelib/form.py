@@ -20,7 +20,8 @@ class PasswordUpdateForm(BaseModel):
 
     @validator('new_password')
     def passwords_do_not_match(cls, value, values, **kwargs):
-        if value == values['old_password']:
+        old_password_exists = 'old_password' in values
+        if old_password_exists and value == values['old_password']:
             raise ValueError('password cannot be the same as old password')
 
         return value

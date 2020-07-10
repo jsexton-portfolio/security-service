@@ -69,6 +69,18 @@ def empty_username_password_update_form(password_update_form):
 
 
 @pytest.fixture
+def empty_old_password_password_update_form(password_update_form):
+    password_update_form['oldPassword'] = None
+    return password_update_form
+
+
+@pytest.fixture
+def empty_new_password_password_update_form(password_update_form):
+    password_update_form['newPassword'] = None
+    return password_update_form
+
+
+@pytest.fixture
 def empty_username_and_passwords_password_update_form(password_update_form):
     password_update_form['username'] = None
     password_update_form['oldPassword'] = None
@@ -97,6 +109,8 @@ def extra_field_password_update_form(password_update_form):
     pytest.param('extra_field_login_form', 1),
 
     pytest.param('empty_username_password_update_form', 1),
+    pytest.param('empty_old_password_password_update_form', 1),
+    pytest.param('empty_new_password_password_update_form', 1),
     pytest.param('empty_username_and_passwords_password_update_form', 3),
     pytest.param('new_password_equals_old_password_password_update_form', 1),
     pytest.param('extra_field_password_update_form', 1),
