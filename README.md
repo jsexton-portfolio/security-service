@@ -5,11 +5,11 @@ Service used to authenticate portfolio user base
 
 ## Endpoints
 
-#### POST /login
+### POST /login
 
 Authenticates a users credentials and responds with access tokens.
 
-##### Request Body Schema:
+#### Request Body Schema:
 ```json
 {
   "username": "(Required)",
@@ -17,7 +17,7 @@ Authenticates a users credentials and responds with access tokens.
 }
 ```
 
-##### Example Successful Response:
+#### Example Successful Response:
 ```json
 {
     "success": true,
@@ -35,7 +35,11 @@ Authenticates a users credentials and responds with access tokens.
 }
 ```
 
-##### Example Failed Response:
+#### Note
+On first login if credentials are valid the response will be 200 OK but the data field will be null. 
+This means the account needs to be confirmed before authenticating.
+
+#### Example Failed Response:
 ```json
 {
     "success": false,
@@ -73,11 +77,11 @@ Authenticates a users credentials and responds with access tokens.
 }
 ```
 
-#### POST /confirm
+### POST /confirm-account
 
 First time login will require the confirmation of the account and a password reset.
 
-##### Request Body Schema:
+#### Request Body Schema:
 ```json
 {
   "username": "(Required)",
@@ -86,7 +90,7 @@ First time login will require the confirmation of the account and a password res
 }
 ```
 
-##### Example Successful Response:
+#### Example Successful Response:
 ```json
 {
     "success": true,
@@ -104,7 +108,7 @@ First time login will require the confirmation of the account and a password res
 }
 ```
 
-##### Example Failed Response:
+#### Example Failed Response:
 ```json
 {
     "success": false,
