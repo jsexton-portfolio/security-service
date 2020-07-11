@@ -4,6 +4,7 @@
 Service used to authenticate portfolio user base
 
 ## Endpoints
+Base path: https://api.justinsexton.net/security
 
 ### POST /login
 
