@@ -32,7 +32,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BaseResponse'
+                $ref: '#/components/schemas/TokenResponse'
         401:
           description: Invalid credentials were provided
 
@@ -62,14 +62,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BaseResponse'
+                $ref: '#/components/schemas/TokenResponse'
         401:
           description: Invalid credentials were provided
 
 components:
   schemas:
     Tokens:
-      description: Entity hold authentication tokens
+      description: Entity storing authentication tokens
       type: object
       properties:
         accessToken:
@@ -82,7 +82,7 @@ components:
           type: string
 
     LoginForm:
-      description: Entity that represents a message sent by someone trying to reach out through the portfolio
+      description: Form used to provide login credentials
       type: object
       properties:
         username:
@@ -91,7 +91,7 @@ components:
           type: string
 
     ConfirmAccountForm:
-      description: test
+      description: Form used to provide account confirmation credentials
       type: object
       properties:
         username:
@@ -101,8 +101,8 @@ components:
         newPassword:
           type: string
 
-    BaseResponse:
-      description: Response that contains a single contact message
+    TokenResponse:
+      description: Response containing authentication tokens for authenticating future requests
       type: object
       properties:
         success:
