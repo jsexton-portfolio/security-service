@@ -1,0 +1,137 @@
+openapi: 3.0.1
+info:
+  title: Justin Sexton Portfolio Security Web API
+  description: API used to interface with Justin Sexton's portfolio aws cognito user pool.
+  version: 0.1.0
+servers:
+  - url: https://api.justinsexton.net/security
+tags:
+  - name: security
+paths:
+  /login:
+    post:
+      tags:
+        - security
+      summary: Authenticates given credentials and responds with authentication tokens
+      operationId: getContactMessages
+      parameters:
+        - name: x-portfolio-version
+          in: header
+          description: Specifies version of API
+          schema:
+            type: string
+      requestBody:
+        description: The request body used to accept login credentials
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginForm'
+      responses:
+        200:
+          description: Can mean one of two things. If the data field is null this means the account needs to be confirmed before authenticating. If the tokens are given, the credentials were valid and the account was in a confirmed status. The user is now successfully authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+        401:
+          description: Invalid credentials were provided
+
+
+  '/confirm-account':
+    post:
+      tags:
+        - security
+      summary: Confirms account for usage by reseting the user's password
+      description: When an account is first created, they are provided a temporary password by an administrator. Before the account's intended owner can make use of the account, the account must be confirmed by updating the password. This endpoint allows just that.
+      operationId: confirmAccount
+      parameters:
+        - name: x-portfolio-version
+          in: header
+          description: Specifies version of API
+          schema:
+            type: string
+      requestBody:
+        description: The request body used to accept account confirmation information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmAccountForm'
+      responses:
+        200:
+          description: Account was successfully confirmed and the user is authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+        401:
+          description: Invalid credentials were provided
+
+components:
+  schemas:
+    Tokens:
+      description: Entity hold authentication tokens
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        idToken:
+          type: string
+        tokenType:
+          type: string
+
+    LoginForm:
+      description: Entity that represents a message sent by someone trying to reach out through the portfolio
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    ConfirmAccountForm:
+      description: test
+      type: object
+      properties:
+        username:
+          type: string
+        oldPassword:
+          type: string
+        newPassword:
+          type: string
+
+    BaseResponse:
+      description: Response that contains a single contact message
+      type: object
+      properties:
+        success:
+          type: boolean
+        meta:
+          $ref: '#/components/schemas/Meta'
+        data:
+          $ref: '#/components/schemas/Tokens'
+
+    ErrorDetail:
+      description: Describes in detail what went wrong when attempting to process a request
+      type: object
+      properties:
+        fieldName:
+          type: string
+        description:
+          type: string
+
+    Meta:
+      description: Contains meta information about the response
+      type: object
+      properties:
+        message:
+          type: string
+        errorDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        schemas:
+          description: Contains details about the response detail. This object is dynamic and depends on the given scenario
+          type: object
+
