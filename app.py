@@ -5,7 +5,7 @@ from chalice import Chalice
 from pycognito import Cognito
 
 from chalicelib.error import error_handler
-from chalicelib.form import LoginForm, PasswordUpdateForm
+from chalicelib.form import LoginForm, PasswordUpdateForm, RefreshTokenForm
 
 app = Chalice(app_name='security-service')
 
@@ -39,6 +39,18 @@ def confirm():
 
     cognito = _client_from_env(username=resolved_form.username)
     cognito.new_password_challenge(resolved_form.old_password, resolved_form.new_password)
+
+    data = _token_response(cognito)
+    return pyocle.response.ok(data)
+
+
+@app.route('/refresh', methods=['POST'], cors=True)
+@error_handler
+def refresh():
+    resolved_form = pyocle.form.resolve_form(app.current_request.raw_body, RefreshTokenForm)
+
+    cognito = _client_from_env(refresh_token=resolved_form.refresh_token)
+    cognito.renew_access_token()
 
     data = _token_response(cognito)
     return pyocle.response.ok(data)

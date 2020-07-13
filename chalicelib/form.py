@@ -47,3 +47,12 @@ class PasswordUpdateForm(BaseModel):
             'old_password': 'oldPassword',
             'new_password': 'newPassword'
         }
+
+
+class RefreshTokenForm(BaseModel):
+    refresh_token: str
+
+    class Config:
+        fields = {
+            'refresh_token': 'refreshToken'
+        }

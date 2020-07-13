@@ -5,7 +5,7 @@ import pyocle
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from chalicelib.form import LoginForm, PasswordUpdateForm
+from chalicelib.form import LoginForm, PasswordUpdateForm, RefreshTokenForm
 
 
 @pytest.fixture
@@ -24,6 +24,15 @@ def password_update_form() -> Dict[str, Any]:
         'username': 'username',
         'oldPassword': 'oldPassword',
         'newPassword': 'Password1.'
+    }
+
+    return copy.deepcopy(valid_form)
+
+
+@pytest.fixture
+def refresh_token_form() -> Dict[str, Any]:
+    valid_form = {
+        'refreshToken': 'refreshToken'
     }
 
     return copy.deepcopy(valid_form)
@@ -100,6 +109,12 @@ def extra_field_password_update_form(password_update_form):
     return password_update_form
 
 
+@pytest.fixture
+def empty_token_refresh_token_form(refresh_token_form):
+    refresh_token_form['refreshToken'] = None
+    return refresh_token_form
+
+
 # See https://docs.pytest.org/en/latest/proposals/parametrize_with_fixtures.html
 # See https://github.com/pytest-dev/pytest/issues/349
 @pytest.mark.parametrize('fixture_name,error_count', [
@@ -114,11 +129,14 @@ def extra_field_password_update_form(password_update_form):
     pytest.param('empty_username_and_passwords_password_update_form', 3),
     pytest.param('new_password_equals_old_password_password_update_form', 1),
     pytest.param('extra_field_password_update_form', 1),
+
+    pytest.param('empty_token_refresh_token_form', 1)
 ])
 def test_that_form_validation_rules_are_correctly_applied(get_fixture, fixture_name, error_count):
     form = get_fixture(fixture_name)
 
     with pytest.raises(pyocle.error.FormValidationError) as exception_info:
+        # Retrieves the desired base model from the fixture name
         form_type = _get_form_type(fixture_name)
         pyocle.form.resolve_form(form, form_type)
 
@@ -139,8 +157,10 @@ def _get_form_type(fixture_name: str) -> Type[BaseModel]:
         return LoginForm
     if fixture_name.endswith('password_update_form'):
         return PasswordUpdateForm
+    if fixture_name.endswith('refresh_token_form'):
+        return RefreshTokenForm
 
-    raise RuntimeError('form type could not be determined by fixture name')
+    raise RuntimeError(f'Form type could not be determined by fixture name: {fixture_name}')
 
 
 @pytest.mark.parametrize('password,valid', [
