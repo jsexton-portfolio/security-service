@@ -151,3 +151,62 @@ First time login will require the confirmation of the account and a password res
     "data": null
 }
 ```
+
+### POST /refresh
+
+#### Request Body Schema:
+```json
+{
+  "refreshToken": "(Required)"
+}
+```
+
+#### Example Successful Response:
+```json
+{
+    "success": true,
+    "meta": {
+        "message": "Request completed successfully",
+        "errorDetails": [],
+        "schemas": {}
+    },
+    "data": {
+        "accessToken": "access token",
+        "refreshToken": "(refresh token)",
+        "idToken": "(id token)",
+        "tokenType": "Bearer"
+    }
+}
+```
+
+#### Example Failed Response:
+```json
+{
+    "success": false,
+    "meta": {
+        "message": "Given inputs were incorrect. Consult the below details to address the issue.",
+        "errorDetails": [
+            {
+                "description": "field required",
+                "fieldName": "refreshToken"
+            }
+        ],
+        "schemas": {
+            "requestBody": {
+                "title": "RefreshTokenForm",
+                "type": "object",
+                "properties": {
+                    "refreshToken": {
+                        "title": "Refreshtoken",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "refreshToken"
+                ]
+            }
+        }
+    },
+    "data": null
+}
+```
