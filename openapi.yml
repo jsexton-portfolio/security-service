@@ -66,6 +66,33 @@ paths:
         401:
           description: Invalid credentials were provided
 
+  /refresh:
+    post:
+      tags:
+        - security
+      summary: Reauthenticates user with given refresh token instead of login credentials
+      parameters:
+        - name: x-portfolio-version
+          in: header
+          description: Specifies version of API
+          schema:
+            type: string
+      requestBody:
+        description: The request body used to accept a refresh token
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenForm'
+      responses:
+        200:
+          description: User was successfully reauthenticated with refresh token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        401:
+          description: Invalid refresh token
+
 components:
   schemas:
     Tokens:
@@ -134,4 +161,11 @@ components:
         schemas:
           description: Contains details about the response detail. This object is dynamic and depends on the given scenario
           type: object
+
+    RefreshTokenForm:
+      description: Contains the refrsh token that should be used to reauthenticate
+      type: object
+      properties:
+        refreshToken:
+          type: string
 
