@@ -15,7 +15,9 @@ class PasswordUpdateForm(BaseModel):
     username: str
     old_password: str
     new_password: str = Field(
-        description='Must conform to password policy. Passwords must contain at least one lower case, one uppercase, one digit and one special character',
+        description=('Must conform to password policy.'
+                     ' Passwords must contain at least one lower case,'
+                     ' one uppercase, one digit and one special character'),
         min_length=8, max_length=99)
 
     @validator('new_password')
