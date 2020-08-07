@@ -15,7 +15,7 @@ def error_handler(decorated):
     :return: The decorated function wrapped with error handling capabilities
     """
 
-    @pyocle.error.error_handler
+    @pyocle.response.error_handler
     def wrapped_handler(*args, **kwargs):
         try:
             return decorated(*args, **kwargs)

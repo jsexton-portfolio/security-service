@@ -135,14 +135,14 @@ def empty_token_refresh_token_form(refresh_token_form):
 def test_that_form_validation_rules_are_correctly_applied(get_fixture, fixture_name, error_count):
     form = get_fixture(fixture_name)
 
-    with pytest.raises(pyocle.error.FormValidationError) as exception_info:
+    with pytest.raises(pyocle.response.FormValidationError) as exception_info:
         # Retrieves the desired base model from the fixture name
         form_type = _get_form_type(fixture_name)
         pyocle.form.resolve_form(form, form_type)
 
     exception = exception_info.value
     assert exception.message == 'Form was not validated successfully'
-    assert len(exception.error_details) == error_count
+    assert len(exception.errors) == error_count
 
 
 def _get_form_type(fixture_name: str) -> Type[BaseModel]:

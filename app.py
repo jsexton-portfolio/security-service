@@ -4,7 +4,7 @@ import pyocle
 from chalice import Chalice
 from pycognito import Cognito
 
-from chalicelib.error import error_handler
+from chalicelib.response import error_handler
 from chalicelib.form import LoginForm, PasswordUpdateForm, RefreshTokenForm
 
 app = Chalice(app_name='security-service')
