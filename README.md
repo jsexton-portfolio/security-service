@@ -1,16 +1,31 @@
 # Portfolio Security Service
 ![](https://github.com/jsexton-portfolio/security-service/workflows/build/badge.svg)
 
-Service used to authenticate portfolio user base
+Service used for various security actions involving portfolio user base.
 
-## Endpoints
+- [Endpoint Summary](#endpoint-summary)
+- [Login](#login)
+- [Confirm Account](#confirm-account)
+- [Refresh](#refresh)
+- [Initiate Forgot Password](#initiate-forgot-password)
+- [Refresh](#confirm-forgot-password)
+
+## Endpoint Summary
 Base path: https://api.justinsexton.net/security
 
-### POST /login
+- POST /login
+- POST /confirm-account
+- POST /refresh
+- POST /init-forgot-password
+- POST /confirm-forgot-password
 
-Authenticates a users credentials and responds with access tokens.
+## Login
 
-#### Request Body Schema:
+Authenticates a users credentials and responds with access tokens.  
+
+URL: https://api.justinsexton.net/security/login
+
+### Request Body Schema:
 ```json
 {
   "username": "(Required)",
@@ -18,7 +33,7 @@ Authenticates a users credentials and responds with access tokens.
 }
 ```
 
-#### Example Successful Response:
+### Example Successful Response:
 ```json
 {
     "success": true,
@@ -37,11 +52,11 @@ Authenticates a users credentials and responds with access tokens.
 }
 ```
 
-#### Note
+### Note
 On first login if credentials are valid the response will be 200 OK but the data field will be null. 
 This means the account needs to be confirmed before authenticating.
 
-#### Example Failed Response:
+### Example Failed Response:
 ```json
 {
     "success": false,
@@ -80,11 +95,13 @@ This means the account needs to be confirmed before authenticating.
 }
 ```
 
-### POST /confirm-account
+## Confirm Account
 
-First time login will require the confirmation of the account and a password reset.
+First time login will require the confirmation of the account and a password reset.  
 
-#### Request Body Schema:
+URL: POST https://api.justinsexton.net/security/confirm-account
+
+### Request Body Schema:
 ```json
 {
   "username": "(Required)",
@@ -93,7 +110,7 @@ First time login will require the confirmation of the account and a password res
 }
 ```
 
-#### Example Successful Response:
+### Example Successful Response:
 ```json
 {
     "success": true,
@@ -112,7 +129,7 @@ First time login will require the confirmation of the account and a password res
 }
 ```
 
-#### Example Failed Response:
+### Example Failed Response:
 ```json
 {
     "success": false,
@@ -156,16 +173,22 @@ First time login will require the confirmation of the account and a password res
 }
 ```
 
-### POST /refresh
+## Refresh
 
-#### Request Body Schema:
+When tokens expire, they will need to be renewed. This can be accomplish by re-authenticating with a
+username and password. Or, by sending a refresh token. When re-authenticating with a refresh token this is the
+endpoint to use.  
+
+URL: POST https://api.justinsexton.net/security/refresh
+
+### Request Body Schema:
 ```json
 {
   "refreshToken": "(Required)"
 }
 ```
 
-#### Example Successful Response:
+### Example Successful Response:
 ```json
 {
     "success": true,
@@ -184,7 +207,7 @@ First time login will require the confirmation of the account and a password res
 }
 ```
 
-#### Example Failed Response:
+### Example Failed Response:
 ```json
 {
     "success": false,
@@ -217,8 +240,14 @@ First time login will require the confirmation of the account and a password res
 }
 ```
 
-### POST /init-forgot-password
-#### Successful Response
+## Initiate Forgot Password
+
+When a password is forgot for a particular account, a reset code can be dispatched to the account's email.
+The code can then be used to authorize a password reset.  
+
+URL: POST https://api.justinsexton.net/security/init-forgot-password
+
+### Successful Response
 ```json
 {
     "success": true,
@@ -232,7 +261,7 @@ First time login will require the confirmation of the account and a password res
 }
 ```
 
-#### Failed Response
+### Failed Response
 ```json
 {
     "success": false,
@@ -266,8 +295,14 @@ First time login will require the confirmation of the account and a password res
 }
 ```
 
-### POST /confirm-forgot-password
-#### Successful Response
+## Confirm Forgot Password
+
+Upon initiating a password reset with the `init-forgot-password` endpoint, once the confirmation code is retrieved,
+it can be used to reset the accounts password.
+
+URL: POST https://api.justinsexton.net/security/confirm-forgot-password
+
+### Successful Response
 ```json
 {
     "success": true,
@@ -281,7 +316,7 @@ First time login will require the confirmation of the account and a password res
 }
 ```
 
-#### Failed Response
+### Failed Response
 ```json
 {
     "success": false,
