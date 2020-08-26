@@ -55,6 +55,27 @@ class RefreshTokenForm(BaseModel):
     refresh_token: str
 
     class Config:
+        extra = Extra.forbid
         fields = {
             'refresh_token': 'refreshToken'
+        }
+
+
+class InitiateForgotPasswordForm(BaseModel):
+    username: str
+
+    class Config:
+        extra = Extra.forbid
+
+
+class ConfirmForgotPasswordForm(BaseModel):
+    username: str
+    new_password: str
+    confirmation_code: str
+
+    class Config:
+        extra = Extra.forbid
+        fields = {
+            'new_password': 'newPassword',
+            'confirmation_code': 'confirmationCode'
         }

@@ -24,7 +24,14 @@ def error_handler(decorated):
             return pyocle.response.response(200, meta=meta)
         except ClientError as ex:
             error = ex.response['Error']
-            if error['Code'] == 'NotAuthorizedException':
+            authentication_exceptions = {
+                'NotAuthorizedException',
+                'CodeMismatchException',
+                'ExpiredCodeException',
+                'LimitExceededException'
+            }
+            is_authentication_error = error['Code'] in authentication_exceptions
+            if is_authentication_error:
                 meta = pyocle.response.metadata(message=error['Message'])
                 return pyocle.response.response(401, meta=meta)
 

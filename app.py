@@ -4,8 +4,9 @@ import pyocle
 from chalice import Chalice
 from pycognito import Cognito
 
+from chalicelib.form import LoginForm, PasswordUpdateForm, RefreshTokenForm, InitiateForgotPasswordForm, \
+    ConfirmForgotPasswordForm
 from chalicelib.response import error_handler
-from chalicelib.form import LoginForm, PasswordUpdateForm, RefreshTokenForm
 
 app = Chalice(app_name='security-service')
 
@@ -54,6 +55,35 @@ def refresh():
 
     data = _token_response(cognito)
     return pyocle.response.ok(data)
+
+
+@app.route('/init-forgot-password', methods=['POST'], cors=True)
+@error_handler
+def initialize_forgot_password():
+    resolved_form = pyocle.form.resolve_form(app.current_request.raw_body, InitiateForgotPasswordForm)
+
+    cognito = _client_from_env(username=resolved_form.username)
+    cognito.initiate_forgot_password()
+    return pyocle.response.response(
+        status_code=200,
+        meta=pyocle.response.metadata('Email has been sent containing password reset confirmation code.')
+    )
+
+
+@app.route('/confirm-forgot-password', methods=['POST'], cors=True)
+@error_handler
+def confirm_forgot_password():
+    resolved_form = pyocle.form.resolve_form(app.current_request.raw_body, ConfirmForgotPasswordForm)
+
+    cognito = _client_from_env(username=resolved_form.username)
+    cognito.confirm_forgot_password(
+        confirmation_code=resolved_form.confirmation_code,
+        password=resolved_form.new_password
+    )
+    return pyocle.response.response(
+        status_code=200,
+        meta=pyocle.response.metadata('Password has successfully been reset')
+    )
 
 
 def _token_response(cognito: Cognito) -> Dict[str, str]:

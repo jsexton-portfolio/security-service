@@ -1,3 +1,8 @@
+# 0.3.0
+- Added `POST /init-forgot-password`
+- Added `POST /confirm-forgot-password`
+- Fixed bug that allowed consumers to call refresh token endpoint with unknown fields
+
 # 0.2.1
 - Migrated with Pyocle
 
