@@ -25,6 +25,7 @@ Authenticates a users credentials and responds with access tokens.
     "meta": {
         "message": "Request completed successfully",
         "errorDetails": [],
+        "paginationDetails": {},
         "schemas": {}
     },
     "data": {
@@ -52,6 +53,7 @@ This means the account needs to be confirmed before authenticating.
                 "fieldName": "password"
             }
         ],
+        "paginationDetails": {},
         "schemas": {
             "requestBody": {
                 "title": "LoginForm",
@@ -98,6 +100,7 @@ First time login will require the confirmation of the account and a password res
     "meta": {
         "message": "Request completed successfully",
         "errorDetails": [],
+        "paginationDetails": {},
         "schemas": {}
     },
     "data": {
@@ -121,6 +124,7 @@ First time login will require the confirmation of the account and a password res
                 "fieldName": "oldPassword"
             }
         ],
+        "paginationDetails": {},
         "schemas": {
             "requestBody": {
                 "title": "PasswordUpdateForm",
@@ -168,6 +172,7 @@ First time login will require the confirmation of the account and a password res
     "meta": {
         "message": "Request completed successfully",
         "errorDetails": [],
+        "paginationDetails": {},
         "schemas": {}
     },
     "data": {
@@ -191,6 +196,7 @@ First time login will require the confirmation of the account and a password res
                 "fieldName": "refreshToken"
             }
         ],
+        "paginationDetails": {},
         "schemas": {
             "requestBody": {
                 "title": "RefreshTokenForm",
