@@ -216,3 +216,115 @@ First time login will require the confirmation of the account and a password res
     "data": null
 }
 ```
+
+### POST /init-forgot-password
+#### Successful Response
+```json
+{
+    "success": true,
+    "meta": {
+        "message": "Email has been sent containing password reset confirmation code.",
+        "errorDetails": [],
+        "paginationDetails": {},
+        "schemas": {}
+    },
+    "data": null
+}
+```
+
+#### Failed Response
+```json
+{
+    "success": false,
+    "meta": {
+        "message": "Given inputs were incorrect. Consult the below details to address the issue.",
+        "errorDetails": [
+            {
+                "description": "field required",
+                "location": "username"
+            }
+        ],
+        "paginationDetails": {},
+        "schemas": {
+            "requestBody": {
+                "title": "InitiateForgotPasswordForm",
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "title": "Username",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "username"
+                ],
+                "additionalProperties": false
+            }
+        }
+    },
+    "data": null
+}
+```
+
+### POST /confirm-forgot-password
+#### Successful Response
+```json
+{
+    "success": true,
+    "meta": {
+        "message": "Password has successfully been reset",
+        "errorDetails": [],
+        "paginationDetails": {},
+        "schemas": {}
+    },
+    "data": null
+}
+```
+
+#### Failed Response
+```json
+{
+    "success": false,
+    "meta": {
+        "message": "Given inputs were incorrect. Consult the below details to address the issue.",
+        "errorDetails": [
+            {
+                "description": "field required",
+                "location": "confirmationCode"
+            },
+            {
+                "description": "extra fields not permitted",
+                "location": "t"
+            }
+        ],
+        "paginationDetails": {},
+        "schemas": {
+            "requestBody": {
+                "title": "ConfirmForgotPasswordForm",
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "title": "Username",
+                        "type": "string"
+                    },
+                    "newPassword": {
+                        "title": "Newpassword",
+                        "type": "string"
+                    },
+                    "confirmationCode": {
+                        "title": "Confirmationcode",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "username",
+                    "newPassword",
+                    "confirmationCode"
+                ],
+                "additionalProperties": false
+            }
+        }
+    },
+    "data": null
+}
+```
