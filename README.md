@@ -8,7 +8,7 @@ Service used for various security actions involving portfolio user base.
 - [Confirm Account](#confirm-account)
 - [Refresh](#refresh)
 - [Initiate Forgot Password](#initiate-forgot-password)
-- [Refresh](#confirm-forgot-password)
+- [Confirm Forgot Password](#confirm-forgot-password)
 
 ## Endpoint Summary
 Base path: https://api.justinsexton.net/security
