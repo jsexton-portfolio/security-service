@@ -247,6 +247,13 @@ The code can then be used to authorize a password reset.
 
 URL: POST https://api.justinsexton.net/security/init-forgot-password
 
+### Request Body Schema:
+```json
+{
+  "username": "(Required)"
+}
+```
+
 ### Successful Response
 ```json
 {
@@ -301,6 +308,15 @@ Upon initiating a password reset with the `init-forgot-password` endpoint, once 
 it can be used to reset the accounts password.
 
 URL: POST https://api.justinsexton.net/security/confirm-forgot-password
+
+### Request Body Schema:
+```json
+{
+  "username": "(Required)",
+  "confirmationCode": "(Required)",
+  "newPassword": "(Required)"
+}
+```
 
 ### Successful Response
 ```json
