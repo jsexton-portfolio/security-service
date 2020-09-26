@@ -9,6 +9,7 @@ Service used for various security actions involving portfolio user base.
 - [Refresh](#refresh)
 - [Initiate Forgot Password](#initiate-forgot-password)
 - [Confirm Forgot Password](#confirm-forgot-password)
+- [Logout](#logout)
 
 ## Endpoint Summary
 Base path: https://api.justinsexton.net/security
@@ -371,6 +372,88 @@ URL: POST https://api.justinsexton.net/security/confirm-forgot-password
                     "username",
                     "newPassword",
                     "confirmationCode"
+                ],
+                "additionalProperties": false
+            }
+        }
+    },
+    "data": null
+}
+```
+
+## Logout
+
+When logging out, all tokens should be invalidated. Calling the logout endpoint with the tokens that need to
+be invalidated will not allow requesters to continue using the tokens to authenticate requests.
+
+URL: POST https://api.justinsexton.net/security/logout
+
+### Request Body Schema:
+```json
+{
+  "accessToken": "(Required)",
+  "idToken": "(Required)",
+  "refreshToken": "(Required)"
+}
+```
+
+### Successful Response
+```json
+{
+    "success": true,
+    "meta": {
+        "message": "User was successfully logged out",
+        "errorDetails": [],
+        "paginationDetails": {},
+        "schemas": {}
+    },
+    "data": null
+}
+```
+
+### Failed Response
+```json
+{
+    "success": false,
+    "meta": {
+        "message": "Given inputs were incorrect. Consult the below details to address the issue.",
+        "errorDetails": [
+            {
+                "description": "field required",
+                "location": "idToken"
+            },
+            {
+                "description": "field required",
+                "location": "refreshToken"
+            },
+            {
+                "description": "field required",
+                "location": "accessToken"
+            }
+        ],
+        "paginationDetails": {},
+        "schemas": {
+            "requestBody": {
+                "title": "LogoutForm",
+                "type": "object",
+                "properties": {
+                    "idToken": {
+                        "title": "Idtoken",
+                        "type": "string"
+                    },
+                    "refreshToken": {
+                        "title": "Refreshtoken",
+                        "type": "string"
+                    },
+                    "accessToken": {
+                        "title": "Accesstoken",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "idToken",
+                    "refreshToken",
+                    "accessToken"
                 ],
                 "additionalProperties": false
             }
