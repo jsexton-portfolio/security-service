@@ -98,8 +98,8 @@ This means the account needs to be confirmed before authenticating.
 
 ## Logout
 
-When logging out, all tokens should be invalidated. Calling the logout endpoint with the tokens that need to
-be invalidated will not allow requesters to continue using the tokens to authenticate requests.
+When logging out, only the refresh token is revoked. Tokens will not be able to be refreshed. Other tokens
+will remain valid until they expire.
 
 URL: POST https://api.justinsexton.net/security/logout
 
