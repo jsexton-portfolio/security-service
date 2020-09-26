@@ -5,7 +5,7 @@ from chalice import Chalice
 from pycognito import Cognito
 
 from chalicelib.form import LoginForm, PasswordUpdateForm, RefreshTokenForm, InitiateForgotPasswordForm, \
-    ConfirmForgotPasswordForm
+    ConfirmForgotPasswordForm, LogoutForm
 from chalicelib.response import error_handler
 
 app = Chalice(app_name='security-service')
@@ -83,6 +83,18 @@ def confirm_forgot_password():
     return pyocle.response.response(
         status_code=200,
         meta=pyocle.response.metadata('Password has successfully been reset')
+    )
+
+
+@app.route('/logout', methods=['POST'], cors=True)
+@error_handler
+def logout():
+    resolved_form = pyocle.form.resolve_form(app.current_request.raw_body, LogoutForm)
+    cognito = _client_from_env(**resolved_form.dict())
+    cognito.logout()
+    return pyocle.response.response(
+        status_code=200,
+        meta=pyocle.response.metadata('User was successfully logged out')
     )
 
 

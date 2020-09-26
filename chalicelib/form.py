@@ -21,7 +21,7 @@ class PasswordUpdateForm(BaseModel):
         min_length=8, max_length=99)
 
     @validator('new_password')
-    def passwords_do_not_match(cls, value, values, **kwargs):
+    def passwords_do_not_match(cls, value, values):
         old_password_exists = 'old_password' in values
         if old_password_exists and value == values['old_password']:
             raise ValueError('password cannot be the same as old password')
@@ -78,4 +78,18 @@ class ConfirmForgotPasswordForm(BaseModel):
         fields = {
             'new_password': 'newPassword',
             'confirmation_code': 'confirmationCode'
+        }
+
+
+class LogoutForm(BaseModel):
+    id_token: str
+    refresh_token: str
+    access_token: str
+
+    class Config:
+        extra = Extra.forbid
+        fields = {
+            'id_token': 'idToken',
+            'refresh_token': 'refreshToken',
+            'access_token': 'accessToken'
         }

@@ -1,3 +1,6 @@
+# 0.4.0
+- Added `POST /logout`
+
 # 0.3.0
 - Added `POST /init-forgot-password`
 - Added `POST /confirm-forgot-password`
