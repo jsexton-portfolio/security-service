@@ -1,3 +1,9 @@
+# v0.4.1
+- Updated dependencies
+    - boto3
+    - chalice
+    - pytest
+
 # 0.4.0
 - Added `POST /logout`
 
